@@ -80,7 +80,7 @@ long LinuxParser::UpTime() {
     std::replace(line.begin(), line.end(), '.', ' ');
     std::istringstream linestream(line);
     linestream >> system >> fractional_part >> idle;
-    return system + idle;
+    return system;
   }
   return 0;
 }
