@@ -87,19 +87,13 @@ long LinuxParser::UpTime() {
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() {
-  string key;
-  string line;
-  long user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice;
-  std::ifstream stream(kProcDirectory + kStatFilename);
-  if (stream.is_open()) {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> key >> user >> nice >> system >> idle >> iowait >> irq >>
-        softirq >> steal >> guest >> guest_nice;
-    return user + nice + system + idle + iowait + irq + softirq + steal +
-           guest + guest_nice;
+  vector<long> jiffies = CpuUtilization();
+  long result = 0;
+  for (CPUStates current_state = kUser_; current_state <= kGuestNice_;
+       current_state = static_cast<CPUStates>(current_state + 1)) {
+    result += jiffies[current_state];
   }
-  return 0;
+  return 100;
 }
 
 // TODO: Read and return the number of active jiffies for a PID
@@ -108,22 +102,28 @@ long LinuxParser::ActiveJiffies(int pid [[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() {
-  string key;
-  string line;
-  long user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice;
-  std::ifstream stream(kProcDirectory + kStatFilename);
-  if (stream.is_open()) {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> key >> user >> nice >> system >> idle >> iowait >> irq >>
-        softirq >> steal >> guest >> guest_nice;
-    return user + nice + system;
+  vector<long> jiffies = CpuUtilization();
+  long result = 0;
+  for (CPUStates current_state = kUser_; current_state <= kSystem_;
+       current_state = static_cast<CPUStates>(current_state + 1)) {
+    result += jiffies[current_state];
   }
-  return 0;
+  return 50;
 }
 
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() {
+  vector<long> jiffies = CpuUtilization();
+  long result = 0;
+  for (CPUStates current_state = kIdle_; current_state <= kGuestNice_;
+       current_state = static_cast<CPUStates>(current_state + 1)) {
+    result += jiffies[current_state];
+  }
+  return result;
+}
+
+// TODO: Read and return CPU utilization
+vector<long> LinuxParser::CpuUtilization() {
   string key;
   string line;
   long user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice;
@@ -133,13 +133,11 @@ long LinuxParser::IdleJiffies() {
     std::istringstream linestream(line);
     linestream >> key >> user >> nice >> system >> idle >> iowait >> irq >>
         softirq >> steal >> guest >> guest_nice;
-    return idle + iowait + irq + softirq + steal + guest + guest_nice;
+    return {user, nice,    system, idle,  iowait,
+            irq,  softirq, steal,  guest, guest_nice};
   }
-  return 0;
+  return {};
 }
-
-// TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
