@@ -10,8 +10,8 @@ float Processor::Utilization() {
   total_ = LinuxParser::Jiffies();
   active_ = LinuxParser::ActiveJiffies();
 
-  long work_over_period = active_ - prev_active_;
-  long total_over_period = total_ - prev_total_;
+  // long work_over_period = active_ - prev_active_;
+  // long total_over_period = total_ - prev_total_;
 
-  return active_ / total_;
+  return active_ / (float)total_;
 }
