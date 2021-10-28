@@ -93,7 +93,7 @@ long LinuxParser::Jiffies() {
        current_state = static_cast<CPUStates>(current_state + 1)) {
     result += jiffies[current_state];
   }
-  return 100;
+  return result;
 }
 
 // TODO: Read and return the number of active jiffies for a PID
@@ -108,7 +108,7 @@ long LinuxParser::ActiveJiffies() {
        current_state = static_cast<CPUStates>(current_state + 1)) {
     result += jiffies[current_state];
   }
-  return 50;
+  return result;
 }
 
 // TODO: Read and return the number of idle jiffies for the system
