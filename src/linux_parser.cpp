@@ -69,16 +69,6 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-vector<Process> LinuxParser::Processes() {
-  vector<Process> processes;
-  vector<int> pids = Pids();
-  for (size_t i = 0; i < pids.size(); i++) {
-    Process process = Process(pids[i]);
-    processes.push_back(process);
-  }
-  return processes;
-}
-
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() {
   long MemTotal, MemFree;
