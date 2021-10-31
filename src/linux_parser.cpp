@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "process.h"
+
 using std::stof;
 using std::string;
 using std::to_string;
@@ -65,6 +67,16 @@ vector<int> LinuxParser::Pids() {
   }
   closedir(directory);
   return pids;
+}
+
+vector<Process> LinuxParser::Processes() {
+  vector<Process> processes;
+  vector<int> pids = Pids();
+  for (size_t i = 0; i < pids.size(); i++) {
+    Process process = Process(pids[i]);
+    processes.push_back(process);
+  }
+  return processes;
 }
 
 // TODO: Read and return the system memory utilization
