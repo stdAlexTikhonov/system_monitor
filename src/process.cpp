@@ -16,6 +16,8 @@ using std::vector;
 // TODO: Return this process's ID
 int Process::Pid() { return pid_; }
 
+void Process::increase() { this->pid_ += 1; }
+
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { return 0; }
 

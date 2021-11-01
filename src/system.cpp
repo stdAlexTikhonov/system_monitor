@@ -20,7 +20,16 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+  vector<Process> processes;
+  vector<int> pids = LinuxParser::Pids();
+  for (size_t i = 0; i < pids.size(); i++) {
+    Process process = Process(pids[i]);
+    processes.push_back(process);
+  }
+  processes_ = processes;
+  return processes_;
+}
 
 // TODO: Return the system's kernel identifier (string)
 std::string System::Kernel() { return LinuxParser::Kernel(); }
@@ -39,13 +48,3 @@ int System::TotalProcesses() { return LinuxParser::TotalProcesses(); }
 
 // TODO: Return the number of seconds since the system started running
 long int System::UpTime() { return LinuxParser::UpTime(); }
-
-vector<Process> System::getProcesses() {
-  vector<Process> processes;
-  vector<int> pids = LinuxParser::Pids();
-  for (size_t i = 0; i < pids.size(); i++) {
-    Process process = Process(pids[i]);
-    processes.push_back(process);
-  }
-  return processes;
-}
