@@ -18,6 +18,5 @@ string Format::ElapsedTime(long seconds) {
   minutes = seconds / 60;
   hours = minutes / 60;
   seconds_ = seconds % 60;
-  return Format(hours % 24) + ':' + Format(minutes % 60) + ':' +
-         Format(seconds_);
+  return Format(hours) + ':' + Format(minutes % 60) + ':' + Format(seconds_);
 }

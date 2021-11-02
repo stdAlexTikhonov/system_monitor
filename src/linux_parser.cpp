@@ -306,7 +306,7 @@ long LinuxParser::UpTime(int pid) {
     std::getline(stream, line);
     std::istringstream linestream(line);
     int index = 0;
-    while (index < 23) {
+    while (index < 22) {
       if (index < 3)
         linestream >> string_value;
       else
