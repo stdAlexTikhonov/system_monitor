@@ -9,7 +9,7 @@ using std::string;
 // OUTPUT: HH:MM:SS
 // REMOVE: [[maybe_unused]] once you define the function
 
-string format_(int value) {
+string Format::Format(int value) {
   return value < 9 ? '0' + std::to_string(value) : std::to_string(value);
 }
 
@@ -18,5 +18,6 @@ string Format::ElapsedTime(long seconds) {
   minutes = seconds / 60;
   hours = minutes / 60;
   seconds_ = seconds % 60;
-  return format_(hours) + ':' + format_(minutes % 60) + ':' + format_(seconds_);
+  return Format(hours % 24) + ':' + Format(minutes % 60) + ':' +
+         Format(seconds_);
 }
