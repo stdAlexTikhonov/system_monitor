@@ -131,11 +131,11 @@ vector<long> LinuxParser::ActiveJiffies(int pid) {
         linestream >> string_value;
       else {
         linestream >> value;
+        if (index == 13) active_jiffies.push_back(value);
         if (index == 14) active_jiffies.push_back(value);
         if (index == 15) active_jiffies.push_back(value);
         if (index == 16) active_jiffies.push_back(value);
-        if (index == 17) active_jiffies.push_back(value);
-        if (index == 22) active_jiffies.push_back(value);
+        if (index == 21) active_jiffies.push_back(value);
       }
       index++;
     }
