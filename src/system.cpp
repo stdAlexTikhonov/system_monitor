@@ -27,7 +27,9 @@ vector<Process>& System::Processes() {
     Process process = Process(pids[i]);
     processes.push_back(process);
   }
+  std::sort(processes.begin(), processes.end());
   processes_ = processes;
+
   return processes_;
 }
 
